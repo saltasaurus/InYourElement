@@ -1,0 +1,24 @@
+[gd_scene load_steps=4 format=3 uid="uid://bg6agtcd7slun"]
+
+[ext_resource type="Script" uid="uid://du6t5l8a8lklr" path="res://combat/shards/elemental_shard.gd" id="1_pyeho"]
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_pu7wf"]
+size = Vector2(8, 8)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_pyeho"]
+radius = 24.0
+
+[node name="Shard" type="Area2D"]
+collision_layer = 128
+collision_mask = 0
+script = ExtResource("1_pyeho")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = SubResource("PlaceholderTexture2D_pu7wf")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_pyeho")
+
+[node name="LifeTimer" type="Timer" parent="."]
+wait_time = 15.0
+one_shot = true

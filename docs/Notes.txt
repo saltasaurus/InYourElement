@@ -1,0 +1,81 @@
+
+Animation
+=========
+Man, screw AnimationPlayer
+
+AnimationPlayer holds the Animations. To set the animations based on an AnimatedSprite2D, 
+You must click the AnimatedSprite2D, click "Animation" tab at the bottom, and then you 
+will see the keyframe symbol by animation. I currently set the animation and the frames, 
+but you can set an AnimationPlayer CallMethod Track and set AnimatedSprite2D.playing to true
+at time=0 instead.
+
+AnimationTree determines animation state within your AnimationPlayer. The Tree is purely for state decisions.
+This allows you to use the same tree (copied) across different scenes that have different animations but the
+same animation groups (IDLE, WALK, etc.)
+
+When using "Advance Expressions", set transitions.advance.mode to Auto. The advance expression will 
+determine what state to play, and code should set the blend positions. This decouples the if-else logic
+for states + travel from code.
+
+Projectiles
+===========
+
+
+Colors
+======
+Godot color constants: 
+	https://docs.godotengine.org/en/stable/classes/class_color.html#constants
+
+
+Zones
+=====
+A base zone is a zone with only a primary element
+An upgraded zone is a zone with a primary and secondary element
+4 conditions
+	Base zone -> same element = nothing
+	Base zone -> new element = upgrade
+	Upgraded zone -> child elements = buff
+	Upgraded zone -> new element = nothing
+	
+Ability Manager
+===============
+The ability manager handles the interactions between specific abilities and the player. 
+The interaction between abilities and the player's state happens through signals.
+When the player does an action, the state machine requests the ability manager to trigger the 
+corresponding action. If the action is viable, then it begins and a signal is emitted.
+The player only changes state if this signal is read. 
+
+## Benefits
+- State machine reacts to abilities, doesn't control them
+- No "stuck state" bug possible (can't transition without signal)
+- Abilities are authoritative about their own readiness
+- Loose coupling via signals
+
+
+Elements
+│
+├── Fire + Earth → Embers
+│   └── + Air → Ash
+│   └── + Water → Magma/Lava
+│
+├── Fire + Air → Smoke
+│   └── + Earth → Ash
+│   └── + Water → Storm
+│
+├── Fire + Water → Steam
+│   └── + Earth → Magma/Lava
+│   └── + Air → Storm
+│
+├── Earth + Air → Dust
+│   └── + Fire → Ash
+│   └── + Water → Clay
+│
+├── Earth + Water → Mud
+│   └── + Fire → Magma/Lava
+│   └── + Air → Clay
+│
+├── Air + Water → Mist
+│   └── + Fire → Storm
+│   └── + Earth → Clay
+│
+└── Fire + Earth + Air + Water → Life / World / Nature
