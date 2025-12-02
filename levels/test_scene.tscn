@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://s2r0c0kbew1o"]
+
+[ext_resource type="PackedScene" uid="uid://dt71ltfeq14wx" path="res://levels/map.tscn" id="1_0wynk"]
+[ext_resource type="PackedScene" uid="uid://jy33ljo53j8h" path="res://entities/player/player.tscn" id="2_x46hq"]
+[ext_resource type="PackedScene" uid="uid://cgtm1m3f4cvkt" path="res://entities/enemies/basic_enemy/enemy.tscn" id="3_ohqux"]
+
+[node name="Game" type="Node2D"]
+
+[node name="Map" parent="." instance=ExtResource("1_0wynk")]
+
+[node name="Player" parent="." instance=ExtResource("2_x46hq")]
+position = Vector2(187, 120)
+
+[node name="Camera2D" type="Camera2D" parent="Player"]
+
+[node name="Enemy" parent="." instance=ExtResource("3_ohqux")]
+position = Vector2(94, 107)
+max_health = 250.0

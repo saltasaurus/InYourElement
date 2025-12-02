@@ -942,6 +942,8 @@ script = ExtResource("5_6jj0l")
 
 [node name="SwordAbility" type="Node" parent="AbilityManager"]
 script = ExtResource("6_ua6mu")
+projectile_speed = null
+projectile_damage = null
 projectile_scene = ExtResource("7_xy0x1")
 base_element = 1
 cooldown_duration = 0.1

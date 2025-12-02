@@ -3,6 +3,8 @@ extends Area2D
 
 @export var shard_tscn: PackedScene
 
+@onready var sprite = $AnimatedSprite2D
+
 # Core properties
 var speed: float
 var direction: Vector2 = Vector2.RIGHT
@@ -20,6 +22,9 @@ var can_spawn_shard: bool = false
 func _ready() -> void:
 	area_entered.connect(_on_area_entered)
 	body_entered.connect(_on_body_entered)
+	
+	sprite.modulate = ElementalManager.get_element_color(element)
+	sprite.play("default")
 	
 func setup(
 	fire_direction: Vector2,

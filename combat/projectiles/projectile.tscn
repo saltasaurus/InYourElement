@@ -1,10 +1,47 @@
-[gd_scene load_steps=4 format=3 uid="uid://c404crx7ow64u"]
+[gd_scene load_steps=10 format=3 uid="uid://c404crx7ow64u"]
 
 [ext_resource type="Script" uid="uid://ble1t25gdg8il" path="res://combat/projectiles/projectile.gd" id="1_eb0ab"]
 [ext_resource type="PackedScene" uid="uid://bg6agtcd7slun" path="res://combat/shards/elemental_shard.tscn" id="2_nqngp"]
+[ext_resource type="Texture2D" uid="uid://d35jafax0q0k" path="res://assets/All_Fire_Bullet_Pixel_16x16_00.png" id="3_xjhl7"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_akgne"]
 radius = 8.0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6d5yq"]
+atlas = ExtResource("3_xjhl7")
+region = Rect2(96, 192, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_t4bww"]
+atlas = ExtResource("3_xjhl7")
+region = Rect2(112, 192, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6405u"]
+atlas = ExtResource("3_xjhl7")
+region = Rect2(128, 192, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ogwsb"]
+atlas = ExtResource("3_xjhl7")
+region = Rect2(144, 192, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_g8o3g"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6d5yq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_t4bww")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6405u")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ogwsb")
+}],
+"loop": true,
+"name": &"default",
+"speed": 8.0
+}]
 
 [node name="Area2D" type="Area2D"]
 collision_layer = 32
@@ -13,6 +50,7 @@ script = ExtResource("1_eb0ab")
 shard_tscn = ExtResource("2_nqngp")
 
 [node name="ColorRect" type="ColorRect" parent="."]
+visible = false
 offset_left = -8.0
 offset_top = -8.0
 offset_right = 8.0
@@ -21,3 +59,9 @@ color = Color(1, 0, 0, 1)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_akgne")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(-1, -0.99999994)
+scale = Vector2(1.0714285, 1.0625)
+sprite_frames = SubResource("SpriteFrames_g8o3g")
+frame_progress = 0.5995323

@@ -6,12 +6,10 @@ signal ability_finished
 @export var cooldown_duration: float = 1.0
 @export var ability_duration: float = 0.3
 
-@export var pickup_cooldown_duration: float = 3.0
-
 var is_active: bool = false
 var ability_timer: float = 0.0
 var cooldown_timer : float = 0.0
-var pickup_cd_timer: float = 0.0
+
 
 func execute() -> void:
 	if not can_execute():
@@ -37,18 +35,9 @@ func _process(delta: float) -> void:
 			is_active = false
 			ability_finished.emit()
 			_on_finished()
-			
+
 	if cooldown_timer > 0.0:
 		cooldown_timer -= delta
-		
-	if pickup_cooldown_duration > 0.0:
-		pickup_cd_timer -= delta
-
-func can_spawn_pickup() -> bool:
-	return pickup_cd_timer <= 0.0
-	
-func start_pickup_cooldown() -> void:
-	pickup_cd_timer = pickup_cooldown_duration
 
 ## Override in child classes for cleanup logic		
 func _on_finished() -> void:
