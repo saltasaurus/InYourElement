@@ -7,7 +7,7 @@ signal infusion_started(element: Enums.Elements)
 signal infusion_ended
 
 # Enums
-enum State { IDLE, WALKING, ATTACKING, DASHING }
+enum State { IDLE, WALKING, ATTACKING, DASHING, BLOCKING }
 
 # Exported variables
 @export var movespeed: float = 200.0
@@ -21,11 +21,13 @@ var current_state: State = State.IDLE
 var movement_direction: Vector2 = Vector2.ZERO
 var mouse_direction: Vector2 = Vector2.DOWN
 var attack_direction: Vector2
+var block_direction: Vector2
 var infusion_element: Enums.Elements
 
 # Animation state properties (read by AnimationTree Advance expressions)
 var is_attacking: bool = false
 var is_dashing: bool = false
+var is_blocking: bool = false
 
 # Node references
 @onready var animation_tree: AnimationTree = $AnimationTree
@@ -47,6 +49,8 @@ func _ready() -> void:
 	ability_manager.attack_finished.connect(_on_attack_finished)
 	ability_manager.dash_started.connect(_on_dash_started)
 	ability_manager.dash_finished.connect(_on_dash_finished)
+	ability_manager.shield_started.connect(_on_block_started)
+	ability_manager.shield_finished.connect(_on_block_finished)
 
 	collection_area.area_entered.connect(_on_collection_area_entered)
 	_infusion_timer.timeout.connect(_clear_infusion)
@@ -65,6 +69,8 @@ func _physics_process(_delta: float) -> void:
 			_handle_attacking_state()
 		State.DASHING:
 			_handle_dashing_state()
+		State.BLOCKING:
+			_handle_blocking_state()
 
 	move_and_slide()
 	_update_animation()
@@ -77,9 +83,11 @@ func _physics_process(_delta: float) -> void:
 func can_attack() -> bool:
 	return current_state in [State.IDLE, State.WALKING]
 
-
 func can_dash() -> bool:
-	return current_state in [State.IDLE, State.WALKING, State.ATTACKING]
+	return current_state in [State.IDLE, State.WALKING, State.ATTACKING, State.BLOCKING]
+	
+func can_block() -> bool:
+	return current_state in[State.IDLE, State.WALKING]
 
 
 func transition_to(next_state: State) -> void:
@@ -111,6 +119,9 @@ func _update_state_machine() -> void:
 	if Input.is_action_just_pressed("dash") and can_dash():
 		ability_manager.execute_dash()
 		return
+	if Input.is_action_just_pressed("block") and can_block():
+		ability_manager.execute_shield()
+		return
 
 	# Handle state transitions based on current state
 	match current_state:
@@ -120,7 +131,7 @@ func _update_state_machine() -> void:
 		State.WALKING:
 			if velocity.length() == 0:
 				transition_to(State.IDLE)
-		State.ATTACKING, State.DASHING:
+		State.ATTACKING, State.DASHING, State.BLOCKING:
 			pass
 
 
@@ -132,6 +143,9 @@ func _enter_state(state: State) -> void:
 			attack_direction = get_mouse_direction()
 		State.DASHING:
 			is_dashing = true
+		State.BLOCKING:
+			is_blocking = true
+			block_direction = get_mouse_direction()
 		State.WALKING, State.IDLE:
 			pass
 
@@ -143,25 +157,25 @@ func _exit_state(state: State) -> void:
 			is_attacking = false
 		State.DASHING:
 			is_dashing = false
+		State.BLOCKING:
+			is_blocking = false
 		State.WALKING, State.IDLE:
 			pass
-
 
 func _handle_idle_state() -> void:
 	_handle_movement_input(movespeed)
 
-
 func _handle_walking_state() -> void:
 	_handle_movement_input(movespeed)
 
-
 func _handle_attacking_state() -> void:
-	_handle_movement_input(0.0)
-
+	_handle_movement_input(movespeed)
 
 func _handle_dashing_state() -> void:
 	pass
 
+func _handle_blocking_state() -> void:
+	_handle_movement_input(movespeed)
 
 func _handle_movement_input(speed: float) -> void:
 	var direction := _get_movement_input()
@@ -210,20 +224,23 @@ func _on_animation_finished() -> void:
 func _on_attack_started() -> void:
 	transition_to(State.ATTACKING)
 
-
 func _on_attack_finished() -> void:
 	if current_state == State.ATTACKING:
 		transition_to(State.IDLE)
 
-
 func _on_dash_started() -> void:
 	transition_to(State.DASHING)
-
 
 func _on_dash_finished() -> void:
 	if current_state == State.DASHING:
 		transition_to(State.IDLE)
 
+func _on_block_started() -> void:
+	transition_to(State.BLOCKING)
+
+func _on_block_finished() -> void:
+	if current_state == State.BLOCKING:
+		transition_to(State.IDLE)
 
 func _on_collection_area_entered(area: Area2D) -> void:
 	if infusion_element != Enums.Elements.NONE:

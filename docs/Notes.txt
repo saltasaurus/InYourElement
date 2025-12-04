@@ -29,6 +29,7 @@ Godot color constants:
 
 Zones
 =====
+(Not using zones anymore, now shards)
 A base zone is a zone with only a primary element
 An upgraded zone is a zone with a primary and secondary element
 4 conditions

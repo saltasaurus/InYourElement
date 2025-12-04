@@ -30,12 +30,12 @@ func setup(pos: Vector2, shard_element: Enums.Elements) -> void:
 	element = shard_element
 	
 		
-func _process(delta: float) -> void:
-	if not is_collectable:
-		return
-		
-	var direction = (_target_pos - position).normalized()
-	position += direction * delta
+#func _process(delta: float) -> void:
+	#if not is_collectable:
+		#return
+		#
+	#var direction = (_target_pos - position).normalized()
+	#position += direction * delta
 		
 
 func _on_spawn_timeout() -> void:

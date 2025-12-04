@@ -1,0 +1,80 @@
+[gd_scene load_steps=2 format=3 uid="uid://d2dx1wtghacqx"]
+
+[ext_resource type="Script" uid="uid://bfgnqmqi444dy" path="res://ui/hud.gd" id="1_rbyyf"]
+
+[node name="HUD" type="CanvasLayer"]
+script = ExtResource("1_rbyyf")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer"]
+visible = false
+layout_mode = 2
+
+[node name="Abilities" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Abilities"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Abilities/VBoxContainer"]
+layout_mode = 2
+text = "AttackCD"
+
+[node name="AttackCooldown" type="ProgressBar" parent="MarginContainer/VBoxContainer/Abilities/VBoxContainer"]
+custom_minimum_size = Vector2(100, 20)
+layout_mode = 2
+value = 100.0
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Abilities"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Abilities/VBoxContainer2"]
+layout_mode = 2
+text = "DashCD"
+
+[node name="DashCooldown" type="ProgressBar" parent="MarginContainer/VBoxContainer/Abilities/VBoxContainer2"]
+custom_minimum_size = Vector2(100, 20)
+layout_mode = 2
+value = 100.0
+
+[node name="VBoxContainer3" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Abilities"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Abilities/VBoxContainer3"]
+layout_mode = 2
+text = "ShieldCD"
+
+[node name="ShieldCooldown" type="ProgressBar" parent="MarginContainer/VBoxContainer/Abilities/VBoxContainer3"]
+custom_minimum_size = Vector2(100, 20)
+layout_mode = 2
+value = 100.0
+
+[node name="InfusionPanel" type="PanelContainer" parent="MarginContainer/VBoxContainer"]
+visible = false
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/InfusionPanel"]
+layout_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="MarginContainer/VBoxContainer/InfusionPanel/HBoxContainer"]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+
+[node name="InfusionLabel" type="Label" parent="MarginContainer/VBoxContainer/InfusionPanel/HBoxContainer"]
+layout_mode = 2
+text = "Element"
+
+[node name="TimerLabel" type="Label" parent="MarginContainer/VBoxContainer/InfusionPanel/HBoxContainer"]
+layout_mode = 2
+text = "0.0 s"

@@ -1,0 +1,35 @@
+[gd_scene load_steps=6 format=3 uid="uid://dwpm87q1mkfnk"]
+
+[ext_resource type="Script" uid="uid://ujylwb5mkp24" path="res://abilities/shield/shield.gd" id="1_ffst0"]
+[ext_resource type="Texture2D" uid="uid://d35jafax0q0k" path="res://assets/All_Fire_Bullet_Pixel_16x16_00.png" id="2_dmnlx"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_0vxx4"]
+height = 32.0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4re53"]
+atlas = ExtResource("2_dmnlx")
+region = Rect2(288, 48, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_tgr6k"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4re53")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="Shield" type="Area2D"]
+collision_layer = 0
+collision_mask = 80
+script = ExtResource("1_ffst0")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_0vxx4")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(-1, -1)
+scale = Vector2(3, 3)
+sprite_frames = SubResource("SpriteFrames_tgr6k")
